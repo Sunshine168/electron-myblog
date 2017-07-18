@@ -1,0 +1,11 @@
+.header{
+  text-align:center;
+  display: inline-block;
+}
+.content_center{
+  width: 0 auto;
+}
+.previewAvater{
+  height: 100px;
+  width: 100px;
+}
