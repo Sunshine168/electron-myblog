@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import {Header} from '../component/Header';
+import {Header} from '../electron-component/Header';
 import { withRouter } from 'react-router-dom';
 import {showFlashMessage,removeFlashMessage} from '../reducer/flashMessage';
 import {loginOut} from '../reducer/user'

@@ -4,7 +4,7 @@ import {offLineNetWork,
   deleteMission,
   clearOffLineMission
 } from '../reducer/appSetting'
-import OffLineHandle from '../component/OffLineHandle'
+import OffLineHandle from '../electron-component/OffLineHandle'
 import {connect} from 'react-redux';
 
 const mapStateToProps = (state)=>(

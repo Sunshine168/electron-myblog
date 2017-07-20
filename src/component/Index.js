@@ -1,3 +1,4 @@
+
 import React,{Component} from 'react';
 import {Link} from 'react-router-dom'
 import blogImage from '../image/blog.png'
@@ -31,7 +32,6 @@ particles(container){
   y: undefined
 };
 /*
-
  */
 /*设定画布大小*/
 canvas.height = container.clientHeight;

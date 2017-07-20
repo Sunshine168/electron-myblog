@@ -1,6 +1,9 @@
 const net = require('net');
 const port = process.env.PORT ? (process.env.PORT - 100) : 3000;
-
+const watch = require('node-watch');
+const watcher = watch('./', { recursive: true });
+const respawn = require('respawn')
+require('events').EventEmitter.prototype._maxListeners = 100;
 process.env.ELECTRON_START_URL = `http://localhost:${port}`;
 
 const client = new net.Socket();
@@ -11,23 +14,31 @@ const tryConnection = () => client.connect({port: port}, () => {
         if(!startedElectron) {
             console.log('starting electron');
             startedElectron = true;
-            const spawn = require('child_process').spawn;
-            const runner = spawn('npm', ['run', 'electron']);
-
-            runner.stdout.on('data', function (data) {
+            const runner = respawn(['npm','run', 'electron']);
+            runner.start()
+            runner.on('stdout', (data)=>{
                 console.log(data.toString());
             });
 
-            runner.stderr.on('data', function (data) {
+            runner.on('stderr', (data)=>{
                 console.error(data.toString());
             });
-
-            runner.on('exit', function (code) {
-                console.log('child process exited with code ' + code.toString());
+            console.log('starting watching');
+            watcher.on('change', function(evt, name) {
+              console.log("runner  restart")
+                 runner.stop(()=>runner.start())
             });
+
+            watcher.on('error', function(err) {
+               console.log(`${evt}`);
+            });
+          process.on('beforeExit',function(){
+             runner.stop();
+          })
         }
     }
 );
+
 
 tryConnection();
 

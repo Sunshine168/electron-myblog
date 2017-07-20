@@ -10,13 +10,11 @@ import {postArticleStarted,
   successPost,
   failurePost
 }from '../reducer/article'
-import {addMission} from '../reducer/appSetting'
 import {addPost} from '../service/fetch'
 const mapStateToProps = (state)=>{
   return {
     user:state.login.user,
     posting:state.article.posting,
-    netWorkStatus:state.appSetting.netWorkStatus,
   }
 }
 const mapDispatchToProps = (dispatch)=>{
@@ -24,7 +22,7 @@ const mapDispatchToProps = (dispatch)=>{
     addPost:async(article)=>{
       dispatch(postArticleStarted());
       let result = await addPost(article);
-      if(result.code==1){
+      if(result.code === 1){
         postArticleSuccess(result.post);
         dispatch(showFlashMessage(successPost("发表文章成功")))
         return true;
@@ -33,18 +31,13 @@ const mapDispatchToProps = (dispatch)=>{
         dispatch(postArticleFailure(result.message))
         return false;
     }
-    return null;
   },
 		showFlashMessage:(message)=>{
 			dispatch(showFlashMessage(message))
 		},
 		removeFlashMessage:()=>{
 			dispatch(removeFlashMessage());
-		},
-    addMission:(mission)=>{
-        dispatch(showFlashMessage(successPost("已经加入离线队列")))
-        dispatch(addMission(mission))
-    }
+		}
 	}
 }
 export default redirect(withRouter(connect(mapStateToProps,mapDispatchToProps)(PostArticle)));

@@ -14,7 +14,7 @@ evenKey
 /*
    index
    articleId
-   isCurrent
+   currentUser
    visit
    time
    commentsCount
@@ -28,12 +28,12 @@ evenKey
 	async controlHandle(eventKey){
 		 let {articleId,index}= this.props;
 		 console.log(index);
-		 if(eventKey==="2"){
+		 if(eventKey == "2"){
 			let result = await deletePost({
 				 postId:articleId,
-				 user_id:this.props.isCurrent,
+				 user_id:this.props.currentUser,
 			});
-			   if(result.code===1){
+			   if(result.code == 1){
 					 //删除成功
 					 this.props.showFlashMessage({
 						 msgType:"success",
@@ -74,7 +74,7 @@ evenKey
 						 详情({props.commentsCount})
 					 </a>
          </LinkContainer>
-         {props.isCurrent?(
+         {props.currentUser?(
            <SplitButton
              bsStyle="link"
              title="操作"

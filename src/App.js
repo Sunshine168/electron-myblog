@@ -8,17 +8,16 @@ import {
 import {StyleRoot} from 'radium';
 import {connect} from 'react-redux';
 import logo from './logo.svg';
-import Header from './container/Header';
+import Header from './ele-component-container/Header';
 import Login from './container/Login';
 import Register from './container/Register';
-import ArticleList from './container/ArticleList'
+import AccessArticles from './container/AccessArticles'
 import FlashMessage from './container/FlashMessage'
 import PostArticle from './container/PostArticle'
 import LoadArticle from './container/LoadArticle'
 import NoMatch from './component/NoMatch';
 import ProgressBars from './container/ProgressBars'
 import Index from './component/Index'
-import OffLineHandle from './container/OffLineHandle';
 import './css/common.css';
 const TestScreen = ()=>(
   <div className="App">
@@ -52,7 +51,7 @@ return (  <Route {...rest} render={props => (
 const UserIndex = ({ match })=>(
   <Route
     path={`${match.url}/:userId`}
-    component={ArticleList}/>
+    component={AccessArticles}/>
 )
 //编辑文章
 const EditArticle = ({ match }) => (
@@ -94,7 +93,7 @@ class App extends Component {
          <div className="container_wrap">
            <FlashMessage/>
            <Switch>
-             <Route exact path="/index" component={Index}/>
+             <Route exact path="/" component={Index}/>
              <Route path="/login" component={Login}/>
              <Route path="/loginOut" component={Login}/>
              <Route path="/register" component={Register}/>
@@ -106,7 +105,7 @@ class App extends Component {
              />
              <PrivateRoute
                path="/personal/index"
-               component={ArticleList}
+               component={AccessArticles}
                auth={auth}
              />
              <PrivateRoute
@@ -114,7 +113,6 @@ class App extends Component {
                component={PostArticle}
                auth={auth}
              />
-             <Route  path="/" component={RedirectFromServer}/>
            </Switch>
          </div>
      </div>

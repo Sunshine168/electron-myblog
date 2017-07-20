@@ -4,12 +4,11 @@ import React, {
 import {Link} from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import PropTypes from 'prop-types'
-import {Navbar,Nav,NavDropdown,NavItem,MenuItem,PageHeader,Popover,OverlayTrigger} from'react-bootstrap';
+import {Navbar,Nav,NavDropdown,NavItem,PageHeader,Popover,OverlayTrigger} from'react-bootstrap';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import OffLineHandle from '../ele-component-container/OffLineHandle';
 const afterLoginAction = [{title:"个人主页",evenKey:"2",href:"/personal/index"},
 {title:"发表文章",evenKey:"2.1",href:"/postArticle"},
-{title:"退出登录",evenKey:"2.2",href:"/loginOut"}]
+{title:"退出登录",evenKey:"2.2",href:"/login"}]
 const beforeLoginAction = [{title:"登录",evenKey:"3",href:"/login"},
 {title:"注册",evenKey:"3.1",href:"/register"}]
 
@@ -40,16 +39,19 @@ const NavbarInstance = (props)=>{
 			return url;
 		}
              return(
-             <div className="left-silde">
-               <Nav stacked onSelect={eventKey=>props.dropDownEvent(eventKey)}>
-								 <NavItem>
-									 <OffLineHandle/>
-								 </NavItem>
-								 <NavItem>
-									 <Link to="/">
-										 <span className="cursorPoint">主页</span>
-									 </Link>
-								 </NavItem>
+             <div>
+               <Navbar>
+                 <Navbar.Header>
+                   <Navbar.Brand>
+                     <a href="https://sunshine168.github.io/resume/">关于我</a>
+                   </Navbar.Brand>
+
+									 <Navbar.Brand>
+										 <Link to="/index">
+											 <span className="cursorPoint">主页</span>
+										 </Link>
+									 </Navbar.Brand>
+                 </Navbar.Header>
 								 {user?
 									 <CopyToClipboard
 										 text={getBlogUrl(user._id)}>
@@ -57,22 +59,31 @@ const NavbarInstance = (props)=>{
 											 rootClose
 											 placement="bottom"
 											 overlay={popoverClick}>
-											 <NavItem
-												 eventKey={0}
-												 href="#">
-												 分享
-											 </NavItem>
+											 <Nav
+												 pullRight
+												 className="nav_action"
+											 >
+												 <NavItem
+													 eventKey={0}
+													 href="#">
+													 分享
+												 </NavItem>
+											 </Nav>
 										 </OverlayTrigger>
 									 </CopyToClipboard>
 									 :null
 								 }
-								 {actionsList.map(item => (
-									 <LinkContainer to={item.href} key={item.evenKey}>
-										 <NavItem key={item.evenKey} eventKey={item.evenKey}>{item.title}</NavItem>
-									 </LinkContainer>
-								 ))}
-							 </Nav>
-						 </div>
+                 <Nav pullRight className="nav_action">
+                   <NavDropdown  eventKey={3} title="操作" id="basic-nav-dropdown" onSelect={eventKey=>props.dropDownEvent(eventKey)}>
+                     {actionsList.map(item => (
+											 <LinkContainer to={item.href} key={item.evenKey}>
+												 <NavItem key={item.evenKey} eventKey={item.evenKey}>{item.title}</NavItem>
+											 </LinkContainer>
+                     ))}
+                   </NavDropdown>
+								 </Nav>
+							 </Navbar>
+    </div>
   )
 }
 
@@ -99,40 +110,34 @@ constructor(props){
       blogIntroduce:"introduce"
   }
 }
-navEventHandler(key){
+dropDownHandler(key){
 //通过Key判断下拉栏选中状态
-if(key=="2.2"){
-/*处理注销的逻辑放在该函数中执行*/
-this._loginOutConfirm()
+if(key === "2.2"){
+this.props.loginOut();
+this.props.showFlashMessage({
+	msg:"注销成功",
+	msgType:"success",
+})
 }
 
 }
 render(){
 	let {user} = this.props;
   return(
+     <div>
        <NavbarInstance
 				 user={user}
-				 dropDownEvent= {(key)=>this.navEventHandler(key)}
+				 dropDownEvent= {(key)=>this.dropDownHandler(key)}
 			 />
+
+       <NavHeader
+         title={user ? user.name + " 's blog":this.state.blogTitle}
+         introduce={user? "": this.state.blogIntroduce}
+
+       />
+
+     </div>
 )
 }
-_loginOutConfirm(){
- /*
- 通过异步通信机制进行确定用户是否要注销
-  */
-  const {ipcRenderer} = window.require('electron')
-	ipcRenderer.send('loginOutConfirm')
-	/* 事件监听 */
-	 ipcRenderer.on('loginOut',function(event, arg){
- 	  console.log(arg) // prints "pong"
- 	  //arg返回 0 代表确定注销,1 代表取消
- 	    if(arg === 0){
- 				this.props.loginOut();
- 				this.props.showFlashMessage({
- 					msg:"注销成功",
- 					msgType:"success",
- 				})
- 			}
- 	  }.bind(this))
- }
+
 }

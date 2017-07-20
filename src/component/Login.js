@@ -63,14 +63,14 @@ export default class LoginInput extends Component  {
 			}
 		}
 		 render(){
-      let {props} = this;
-			if(props.user){
-				return(
+      let {user,location} = this.props;
+			if(user){
+					return(
 					<Redirect to={{
-						pathname: '/personal/index',
-						state: { from: props.location }
+						pathname: 'personal/index',
+						state: { from:location }
 					}}/>)
-			}
+				}
      return (
             <div className="content_wrap">
 							<form>

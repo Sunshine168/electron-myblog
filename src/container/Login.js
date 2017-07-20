@@ -1,6 +1,6 @@
 import Login from '../component/Login';
 import '../css/login.css';
-import {loginIn,startLogin,finishLogin,failLogin,loginSuccess,loginFail} from '../reducer/user';
+import {startLogin,finishLogin,failLogin,loginSuccess,loginFail} from '../reducer/user';
 import {showFlashMessage,removeFlashMessage } from '../reducer/flashMessage';
 import redirect from '../hight-order-component/redirect';
 import {connect} from 'react-redux';
@@ -13,9 +13,10 @@ const mapDispatchToProps = (dispatch)=>{
 	return {
 		loginIn:async(user)=>{
 			dispatch(startLogin());
+			// let loading = document.getElementById('loading');
+      // loading.style.display="block";
 			let result = await login(user)
-      if(result.code==1){
-				   /*store cookies*/
+      if(result.code == 1){
           dispatch(finishLogin(result.user));
 					dispatch(showFlashMessage(loginSuccess()))
 			}else{

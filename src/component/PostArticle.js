@@ -16,8 +16,6 @@ export default class PostArticle  extends Component{
 		showFlashMessage:PropTypes.func,
 		removeFlashMessage:PropTypes.func,
 		addArticle:PropTypes.func,
-	  addMission:PropTypes.func,
-		netWorkStatus:PropTypes.number
 	})
 	constructor(props){
 		super(props);
@@ -129,7 +127,7 @@ async  componentDidMount(){
             <Button
               disabled={posting=="loading"}
 							componentClass="foot_btn"
-							onClick={()=>this._postArticle()}>
+						onClick={()=>this._postArticle()}>
 					发送</Button>:null
 
 				}
@@ -146,34 +144,18 @@ async  componentDidMount(){
 		let {title,context,titleValid,contextValid}=this.state,valid
 			//检查数据有效性
 				if(titleValid=="success"&&contextValid=="success"){
-					  if(this.props.netWorkStatus==1){
-							let result = await this.props.addPost({
-								article:{
-									title,
-									context,
-								},
-								user_id:this.props.user._id,
-							})
-		          if(result){
-		            let pathname ='/personal/index',
-		             redirectState = { from: this.props.location };
-		             this.props.redirect(pathname,redirectState)
-		          }
-						}else{
-							 this.props.addMission({
-								 content:{
-									 article:{
-	 									title,
-	 									context,
-	 								},
-	 								user_id:this.props.user._id,
-								},
-								type:"postArticle"
-							})
-							let pathname ='/personal/index',
-							 redirectState = { from: this.props.location };
-							 this.props.redirect(pathname,redirectState)
-						}
+					let result = await this.props.addPost({
+						article:{
+							title,
+							context,
+						},
+						user_id:this.props.user._id,
+					})
+          if(result){
+            let pathname ='/personal/index',
+             redirectState = { from: this.props.location };
+             this.props.redirect(pathname,redirectState)
+          }
 					}
 				}
 	//更新文章的网络请求

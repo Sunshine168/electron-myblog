@@ -9,6 +9,7 @@
     "classnames": "^2.2.5",
     "electron-debug": "^1.2.0",
     "electron-reload": "^1.2.1",
+    "node-watch": "^0.5.5",
     "prop-types": "^15.5.8",
     "qs": "^6.4.0",
     "query-string": "^4.3.4",
@@ -26,7 +27,8 @@
     "redux": "^3.6.0",
     "redux-await": "^5.0.1",
     "redux-persist": "^4.8.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "respawn": "^2.5.0"
   },
   "devDependencies": {
     "autoprefixer": "6.7.2",
@@ -112,5 +114,6 @@
     "extends": "react-app"
   },
   "main": "src/electron-starter.js",
-  "homepage": "./"
+  "homepage": "./",
+  "proxy": "http://loacalhost:3005"
 }
