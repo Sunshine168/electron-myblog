@@ -24,11 +24,10 @@ export default StyleSheet.create({
         "color": "#999"
     },
     "article_container": {
-        "marginTop": "auto",
-        "marginRight": "auto",
-        "marginBottom": 50,
-        "marginLeft": "auto",
-        "width": 800,
+        "paddingTop": 50,
+        "paddingRight": 20,
+        "paddingBottom": 50,
+        "paddingLeft": 20,
         "textAlign": "center"
     },
     "author_intro": {},

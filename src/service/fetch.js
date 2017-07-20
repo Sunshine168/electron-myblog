@@ -1,4 +1,4 @@
-export const DOMAIN = "";
+export const DOMAIN = "http://localhost:3005";
 const CREDENTIALS = (process.env.ORIGIN)?"include":'same-origin';
 /*
 处理所有网络请求_目前没有和action集成异步数据流，

@@ -3,18 +3,26 @@ const electron = require('electron');
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
-
+const {ipcMain,dialog} = require('electron')
 const path = require('path')
 const url = require('url')
+const { default: installExtension, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 require('electron-debug')({showDevTools:true})
-const {ipcMain} = require('electron')
+installExtension(REDUX_DEVTOOLS)
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('An error occurred: ', err));
+// require('electron-reload')(__dirname);
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let mainWindow, onlineStatusWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 500,
+    'web-preferences': {'web-security': false}
+  })
 
   // dev mode load the localhost and pro load the build folder file
   const startUrl = process.env.ELECTRON_START_URL || url.format({
@@ -35,11 +43,17 @@ function createWindow () {
     mainWindow = null
   })
 }
-
+function listenr() {}
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', ()=>{
+  //监听窗体
+  onlineStatusWindow = new BrowserWindow({ width: 0, height: 0, show: false })
+  onlineStatusWindow.loadURL(path.join('file://', __dirname, '/../build/onlineStauts.html'))
+  //main window
+  createWindow()
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -67,15 +81,20 @@ const staticPath = process.env.ELECTRON_START_URL?'./build/':path.join(__dirname
 /*async event */
 //loginOut confirm
 ipcMain.on('loginOutConfirm', (event, arg) => {
-  const modalPath = path.join('file://', __dirname, '/../build/index.html')
-  let win = new BrowserWindow({ frame: false,width: 400, height: 320  })
-  win.on('close', function () { win = null })
-  win.loadURL(modalPath)
-  win.show()
-  event.sender.send('asynchronous-reply', 'pong')
-})
-
-ipcMain.on('synchronous-message', (event, arg) => {
-  console.log(arg)  // prints "ping"
-  event.returnValue = 'pong'
+  /* if use  custom dialog */
+  // const modalPath = path.join('file://', __dirname, '/../build/loginOutDialogue.html')
+  // let win = new BrowserWindow({ frame: false,width: 400, height: 320  })
+  // win.on('close', function () { win = null })
+  // win.loadURL(modalPath)
+  // win.show()
+  /* use the electron dialog*/
+  const options = {
+    type:'info',
+    title:'注销提示',
+    message:'确定要注销账号吗？',
+    buttons:['yes','no']
+  }
+  dialog.showMessageBox(options,(index)=>{
+     event.sender.send('loginOut',index);
+  })
 })

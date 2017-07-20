@@ -6,5 +6,9 @@ const {width, height, scale} = Dimensions.get("window"),
     vmax = Math.max(vw, vh);
 
 export default StyleSheet.create({
-    "flashMessage_container": {}
+    "flashMessage_container": {
+        "position": "fixed",
+        "top": 0,
+        "width": "100%"
+    }
 });

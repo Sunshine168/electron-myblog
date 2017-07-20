@@ -16,9 +16,8 @@
   color:#999;
 }
 .article_container{
-  margin: auto;
-  width: 800px;
-  margin-bottom: 50px;
+
+  padding: 50px 20px;
   text-align: center;
 }
 .author_intro{

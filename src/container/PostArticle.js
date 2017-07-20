@@ -10,11 +10,13 @@ import {postArticleStarted,
   successPost,
   failurePost
 }from '../reducer/article'
+import {addMission} from '../reducer/appSetting'
 import {addPost} from '../service/fetch'
 const mapStateToProps = (state)=>{
   return {
     user:state.login.user,
     posting:state.article.posting,
+    netWorkStatus:state.appSetting.netWorkStatus,
   }
 }
 const mapDispatchToProps = (dispatch)=>{
@@ -38,7 +40,11 @@ const mapDispatchToProps = (dispatch)=>{
 		},
 		removeFlashMessage:()=>{
 			dispatch(removeFlashMessage());
-		}
+		},
+    addMission:(mission)=>{
+        dispatch(showFlashMessage(successPost("已经加入离线队列")))
+        dispatch(addMission(mission))
+    }
 	}
 }
 export default redirect(withRouter(connect(mapStateToProps,mapDispatchToProps)(PostArticle)));

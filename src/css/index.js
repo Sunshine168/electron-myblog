@@ -89,7 +89,7 @@ export default StyleSheet.create({
     "left-silde nav": {
         "left": 0,
         "top": "50%",
-        "transform": "translateY(50%)"
+        "transform": "translateY(20%)"
     },
     "container_wrap": {
         "position": "relative",

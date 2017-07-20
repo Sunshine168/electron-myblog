@@ -6,6 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import PropTypes from 'prop-types'
 import {Navbar,Nav,NavDropdown,NavItem,MenuItem,PageHeader,Popover,OverlayTrigger} from'react-bootstrap';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import OffLineHandle from '../container/OffLineHandle';
 const afterLoginAction = [{title:"个人主页",evenKey:"2",href:"/personal/index"},
 {title:"发表文章",evenKey:"2.1",href:"/postArticle"},
 {title:"退出登录",evenKey:"2.2",href:"/loginOut"}]
@@ -42,7 +43,7 @@ const NavbarInstance = (props)=>{
              <div className="left-silde">
                <Nav stacked onSelect={eventKey=>props.dropDownEvent(eventKey)}>
 								 <NavItem>
-									 <a href="#">关于我</a>
+									 <OffLineHandle/>
 								 </NavItem>
 								 <NavItem>
 									 <Link to="/">
@@ -98,16 +99,11 @@ constructor(props){
       blogIntroduce:"introduce"
   }
 }
-dropDownHandler(key){
+navEventHandler(key){
 //通过Key判断下拉栏选中状态
 if(key=="2.2"){
+/*处理注销的逻辑放在该函数中执行*/
 this._loginOutConfirm()
-// this.props.loginOut();
-// this.props.showFlashMessage({
-// 	msg:"注销成功",
-// 	msgType:"success",
-// })
-
 }
 
 }
@@ -116,7 +112,7 @@ render(){
   return(
        <NavbarInstance
 				 user={user}
-				 dropDownEvent= {(key)=>this.dropDownHandler(key)}
+				 dropDownEvent= {(key)=>this.navEventHandler(key)}
 			 />
 )
 }
@@ -125,9 +121,18 @@ _loginOutConfirm(){
  通过异步通信机制进行确定用户是否要注销
   */
   const {ipcRenderer} = window.require('electron')
-	// In renderer process (web page).
-	ipcRenderer.on('loginOutConfirm', (event, arg) => {
-	  console.log(arg) // prints "pong"
-	})
+	ipcRenderer.send('loginOutConfirm')
+	/* 事件监听 */
+	 ipcRenderer.on('loginOut',function(event, arg){
+ 	  console.log(arg) // prints "pong"
+ 	  //arg返回 0 代表确定注销,1 代表取消
+ 	    if(arg === 0){
+ 				this.props.loginOut();
+ 				this.props.showFlashMessage({
+ 					msg:"注销成功",
+ 					msgType:"success",
+ 				})
+ 			}
+ 	  }.bind(this))
  }
 }

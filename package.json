@@ -8,6 +8,7 @@
     "bootstrap": "^3.3.7",
     "classnames": "^2.2.5",
     "electron-debug": "^1.2.0",
+    "electron-reload": "^1.2.1",
     "prop-types": "^15.5.8",
     "qs": "^6.4.0",
     "query-string": "^4.3.4",
@@ -43,6 +44,8 @@
     "css-loader": "0.26.1",
     "detect-port": "1.1.0",
     "dotenv": "2.0.0",
+    "electron": "^1.6.11",
+    "electron-devtools-installer": "^2.2.0",
     "eslint": "3.16.1",
     "eslint-config-react-app": "^0.6.2",
     "eslint-loader": "1.6.0",
@@ -52,6 +55,7 @@
     "eslint-plugin-react": "6.4.1",
     "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.10.0",
+    "foreman": "^2.0.0",
     "fs-extra": "0.30.0",
     "html-webpack-plugin": "2.24.0",
     "http-proxy-middleware": "0.17.3",
@@ -66,9 +70,7 @@
     "webpack": "1.14.0",
     "webpack-dev-server": "1.16.2",
     "webpack-manifest-plugin": "1.1.0",
-    "whatwg-fetch": "2.0.2",
-    "electron": "^1.6.11",
-    "foreman": "^2.0.0"
+    "whatwg-fetch": "2.0.2"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -110,6 +112,5 @@
     "extends": "react-app"
   },
   "main": "src/electron-starter.js",
-  "homepage": "./",
-  "proxy": "http://localhost:3005"
+  "homepage": "./"
 }
